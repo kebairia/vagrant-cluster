@@ -1,0 +1,125 @@
+* Roles
+- *esiedge.base-sys*:  base configuration for the node (system hardening, client side configuration for service(syslog,dns,dhcp...etc))
+- *esiedge.debian-base-sys*: system base configuration for debian based VM, (! will be replaced with condition in *esiedge.base-sys* role)
+- *esiedge.dhcp-server*: /deprecated/
+- *esiedge.haproxy*: configure HAProxy on the node
+- *esiedge.installation-server*: role for the boot server, PXE,kickstart configuration..etc
+- *esiedge.ipa-server*: /deprecated/
+- *esiedge.keepalived-backup*: set a keepalived service on the node (backup side)
+- *esiedge.keepalived-master*: set a keepalived service on the node (server side)
+- *esiedge.ldap-server*: ldap server
+- *esiedge.master-dhcp-server*:  DHCP server (master)
+- *esiedge.master-dns-server*: DNS server (master)
+- *esiedge.slave-dns-server*:  DNS server (slave)
+- *esiedge.monitoring-server*: zabbix server
+- *esiedge.pacemaker*: configure a pacemaker node (only initial configuration and packages setup)
+- *esiedge.syslog-server*: configure a syslog server
+- *esiedge.vpn-server*: /deprecated/
+* *EXAMPLE*
+setup you server's information on [[file:servers.yml]] file
+  #+begin_src yaml
+    - name: test1
+      ip: 192.168.121.100
+      box: centos/8
+      memory: 512
+      cpus: 1
+      hostname: test1.esiedge.local
+      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      add_disks: "true"
+      disk_size: ['8G', '4G']
+      pool: "/home/zakaria/dox/vms/esiedge/"
+      playbook: "./myplaybook.yml"
+    
+    - name: test2
+      ip: 192.168.121.150
+      box: centos/7
+      memory: 1024
+      cpus: 2
+      hostname: test2.esiedge.local
+      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      add_disks: "true"
+      disk_size: ['28G', '14G']
+      pool: "/home/zakaria/dox/vms/esiedge/"
+      playbook: "./another_playbook.yml"
+  #+end_src
+- Bring up the whole infrastructure.
+#+begin_src sh
+  vagrant up 
+#+end_src
+- or you can bring up only one of the servers listed in the *YAML* file
+#+begin_src sh
+  vagrant up test2
+#+end_src
+
+- Testing 2 *Load Balancers* with a keepalived service, and 2 *syslog* servers, and a *testing* virtual machine
+#+begin_src sh
+  vagrant up lb1 lb2 syslog1 syslog2 test1
+#+end_src
+* Scenarios to Test
+** TODO Scenario #1
+- [[file:img/pacemaker-test.png]]
+- 2 Haproxy with pacemaker installed on , 1 testing machine and two web servers(you can use VirtualHost) 
+  - ~servers.yml~ example
+  #+begin_src yaml
+    - name: test1
+      ip: 192.168.121.100
+      box: centos/8
+      memory: 1024
+      cpus: 1
+      hostname: test2.esiedge.local
+      cdrom: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      add_disks: "false"
+      disk_size: '4G'
+      pool: "/home/zakaria/dox/vms/esiedge/"
+      playbook: "./configure-base-config.yml"
+    
+    - name: pcmk1
+      ip: 192.168.121.41
+      box: centos/7
+      memory: 1024
+      cpus: 1
+      hostname: pcmk1.esiedge.local
+      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      add_disks: "false"
+      disk_size: '4G'
+      pool: "/home/zakaria/dox/vms/esiedge/"
+      playbook: "./scenario1.yml"
+    
+    - name: pcmk2
+      ip: 192.168.121.42
+      box: centos/7
+      memory: 1024
+      cpus: 1
+      hostname: pcmk2.esiedge.local
+      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      add_disks: "false"
+      disk_size: ['28G', '14G']
+      pool: "/home/zakaria/dox/vms/esiedge/"
+      playbook: "./scenario2.yml"
+  #+end_src
+  - scenrio.yml playbook example
+  #+begin_src yaml
+    ---
+    - name: Scenario 1 configuration
+      hosts: all
+      user: vagrant
+      become: true
+      gather_facts: yes
+      roles:
+        - esiedge.base-sys
+        - esiedge.haproxy
+        - esiedge.pacemaker
+    ...
+  #+end_src
+  #+begin_src sh
+    vagrant up pcmk1 pcmk2 test1
+  #+end_src
+  - login to your VMs using ~vagrant ssh <name of the vm>~
+    #+begin_src sh
+      # 1st pacemaker vm
+      vagrant ssh pcmk1
+      # 2nd pacemaker vm
+      vagrant ssh pcmk2
+      # testing machine
+      vagrant ssh test1
+    #+end_src
