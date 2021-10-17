@@ -1,3 +1,6 @@
+* Configuration file
+* Vagrantfile
+* Network
 * Roles
 - *esiedge.base-sys*:  base configuration for the node (system hardening, client side configuration for service(syslog,dns,dhcp...etc))
 - *esiedge.debian-base-sys*: system base configuration for debian based VM, (! will be replaced with condition in *esiedge.base-sys* role)
