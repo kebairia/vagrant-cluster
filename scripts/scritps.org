@@ -1,0 +1,151 @@
+* network scripts
+** NET CONFIGS 
+:PROPERTIES:
+:header-args: :tangle ./net_configs.sh :link yes :shebang "#!/bin/env sh"
+:header-args: :results none
+:END:
+*** initial 
+#+begin_src sh
+# Variables
+DATA_FILE="./ip-mac-dhcp.conf"
+NET_CONF="gryphon"
+BR_NET="br0"
+BR_NET_CONF="br-net"
+PR_NET_CONF="gryphon"
+setup_color(){
+    # Only use color if connected to a terminal
+    if [ -t 1 ]; then
+	RED=$(printf '\033[0;31m')
+	GREEN=$(printf '\033[0;32m')
+	YELLOW=$(printf '\033[0;33m')
+	BLUE=$(printf '\033[0;34m')
+	PURPLE=$(printf '\033[0;35m')
+	CYAN=$(printf '\033[0;36m')
+	BOLD=$(printf '\033[1m')
+	RESET=$(printf '\033[0m')
+    else
+	RED=''
+	GREEN=''
+	YELLOW=''
+	BLUE=''
+	PURPLE=''
+	CYAN=''
+	BOLD=''
+	RESET=''
+    fi
+}
+#+end_src
+*** network configurations
+#+begin_src sh
+  setup_bridge_net_conf(){
+      cat <<EOF > ./${BR_NET_CONF}
+    <network>
+        <name>${BR_NET_CONF}</name>
+        <forward mode="bridge" />
+        <bridge name="$BR_NET" />
+    </network>
+  EOF
+      virsh net-define ${BR_NET_CONF}
+      virsh net-start ${BR_NET_CONF}
+      virsh net-autostart ${BR_NET_CONF} 
+    }
+  
+  setup_private_net_conf(){
+      cat <<EOF > ./${PR_NET_CONF}
+  <network>
+    <name>${PR_NET_CONF}</name>
+    <uuid>2f73b304-0632-2f9d-9159-edd8b752f514</uuid>
+    <forward mode='nat'/>
+    <bridge name='virbr2' stp='on' delay='0'/>
+    <mac address='52:54:00:17:14:3e'/>
+    <domain name='gryphon'/>
+    <ip address='192.168.2.1' netmask='255.255.255.0'></ip>
+  </network>
+  EOF
+  
+      virsh net-define ${PR_NET_CONF}
+      virsh net-start ${PR_NET_CONF}
+      virsh net-autostart ${PR_NET_CONF} 
+    }
+#+end_src
+*** DHCP reservation for network connections
+#+begin_src sh
+  setup_ip_dhcp_res(){
+      while read line
+      do
+          MAC=$(echo $line | cut -d"," -f1)
+          IP=$(echo $line | cut -d"," -f2)
+  
+          echo "${GREEN}SETUP${RESET} $MAC:$IP"
+  
+          virsh net-update $NET_CONF add-last ip-dhcp-host \
+                "<host mac=$MAC ip=$IP/>" \
+                --live --config --parent-index 0
+      done < $DATA_FILE
+  }
+  clean_ip_dhcp_res(){
+  while read line
+  do
+      MAC=$(echo $line | cut -d"," -f1)
+      IP=$(echo $line | cut -d"," -f2)
+  
+      echo "${RED}CLEAN${RESET} $MAC:$IP"
+  
+      virsh net-update $NET_CONF delete ip-dhcp-host \
+          "<host mac=$MAC ip=$IP/>" \
+          --live --config --parent-index 0
+      done < $DATA_FILE
+  }
+  
+#+end_src
+*** misc functions
+#+begin_src sh
+  restart_network(){
+      virsh net-destroy $NET_CONF &&\
+          virsh net-start $NET_CONF
+  
+  }
+  generate_hash(){
+      cat /dev/urandom \
+          | tr -dc "[:alnum:]" \
+          | tr -s A-Z a-z \
+          | head -c $1
+      
+  }
+#+end_src
+*** main
+#+begin_src sh
+  setup_color
+  echo $net_uuid
+  case "$1" in
+      -s | --setup) setup_ip_dhcp_res && restart_network ;;
+      -c | --clean) clean_ip_dhcp_res && restart_network ;;
+      -b | --bridge) setup_bridge_net_conf ;;
+      -p | --private) setup_private_net_conf ;;
+  esac
+#+end_src
+
+** COMMENT DHCP RESERVATION FILE
+:PROPERTIES:
+:header-args: :tangle ./ip-mac-dhcp.conf
+:header-args: :results none
+:END:
+#+begin_src sh
+  
+#+end_src
+* vagrant ssh config
+:PROPERTIES:
+:header-args: :tangle ./vagrant_ssh_config.sh :link yes :shebang "#!/bin/env sh"
+:header-args: :results none
+:END:
+#+begin_src sh
+  # this script helps you to access to your vagrant virtual machine
+  # from anypoint you are in
+  # the classic way to access vagrant's virtual machine folder to gain ssh access
+  
+  mkdir -p ~/.ssh/vagrant.d/ && \
+      echo "Include vagrant.d/sshconfig" >> ~/.ssh/config
+  
+  vagrant ssh-config > ~/.ssh/vagrant.d/sshconfig
+  
+#+end_src

@@ -1,0 +1,5 @@
+  <network>
+      <name>srv-br0</name>
+      <forward mode="bridge" />
+      <bridge name="srv-br0" />
+  </network>
