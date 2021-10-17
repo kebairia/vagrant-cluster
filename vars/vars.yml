@@ -1,0 +1,11 @@
+user: vagrant
+master-dns-server-ip: 192.168.121.2
+slave-dns-server-ip: 192.168.121.3
+dhcp-server-ip-master: 192.168.121.2
+dhcp-server-ip-slave: 192.168.121.3
+lb1-ip: 192.168.121.11
+lb2-ip: 192.168.121.12
+syslog1-ip: 192.168.121.21
+syslog2-ip: 192.168.121.22
+ldap1-ip: 192.168.121.31
+ldap2-ip: 192.168.121.32
