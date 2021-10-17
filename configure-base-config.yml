@@ -1,0 +1,11 @@
+---
+- name: base config
+  hosts: all
+  user: vagrant
+  become: true
+  gather_facts: yes
+  vars_files:
+    - ./vars/vars.yml
+  roles:
+    - esiedge.base-sys
+...

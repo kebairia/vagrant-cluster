@@ -1,0 +1,12 @@
+---
+- name: Install and Configure ADMIN1 server
+  hosts: all
+  user: vagrant
+  become: true
+  gather_facts: yes
+  roles:
+    - esiedge.base-sys
+    - esiedge.master-dns-server 
+    #- esiedge.master-dhcp-server 
+    - esiedge.ntp-server
+...

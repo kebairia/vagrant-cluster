@@ -1,0 +1,10 @@
+---
+- name: Install and Configure ADMIN2 server
+  hosts: all
+  user: vagrant
+  become: true
+  gather_facts: yes
+  roles:
+    - esiedge.base-sys
+    - esiedge.slave-dns-server 
+    - esiedge.ntp-server
