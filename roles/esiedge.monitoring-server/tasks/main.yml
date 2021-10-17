@@ -1,0 +1,94 @@
+---
+# tasks file for zabbix_monitoring_server
+
+
+- name: set selinux on permissive
+  shell: setenforce 0 && sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
+
+
+
+#Step1: install and configure apache web server
+- name: apache web server
+  package:
+    name: httpd
+    state: present
+
+- name: start and enable the apache service
+  service:
+    name: httpd
+    state: started
+    enabled: yes  
+
+- name: install the repository for zabbix
+  yum:
+    name: "{{ zabbix_repo }}"
+    state: present  
+    disable_gpg_check: true
+
+- name: install the requirement packages for zabbix server
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ zabbix_packages }}"    
+
+      
+
+#Step2: Install mariadb database server
+- name: install and configure mariadb database server for zabbix
+  include_tasks: configure_database.yml
+   
+
+
+- name: Import zabbix schema 
+  community.mysql.mysql_db:
+       state: import
+       name: "{{ zabbix_server_database_name }}"  
+       target: "{{zabbix_documentation_path}}/create.sql.gz"
+       login_host: "{{ zabbix_server_database_host}}"
+       login_user: "{{ zabbix_server_database_user }}"  
+       login_password: "{{ zabbix_server_database_password }}"     
+       force: yes
+  ignore_errors: yes
+
+
+
+# Configuring zabbix for database information
+- name: edit zabbix config file
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf  
+    line: DBPassword={{ zabbix_server_database_password }}
+  notify:
+    - restart zabbix services
+      
+
+# Configure PHP for zabbix frontend
+- name: edit php frontend for zabbix
+  lineinfile:
+    path: /etc/php-fpm.d/zabbix.conf
+    line: php_value[date.timezone]= "{{ php_value_time_zone }}"
+  notify:   
+    - restart zabbix php service
+
+- name: install firewalld
+  package:
+    name: firewalld
+    state: present  
+
+- name: start firewalld service
+  service:
+    name: firewalld
+    state: started
+    enabled: yes  
+
+
+- name: open zabbix ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop: "{{ zabbix_ports }}"     
+  notify:
+     - reload firewall
+     - restart http service
+
+

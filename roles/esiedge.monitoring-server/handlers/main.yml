@@ -1,0 +1,30 @@
+---
+# handlers file for zabbix_monitoring_server
+
+
+- name: restart zabbix services
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes  
+  loop: "{{ zabbix_services }}"
+
+
+- name: restart zabbix php service
+  service:
+    name: "{{ zabbix_php_service }}"
+    state: restarted
+    enabled: yes
+   
+
+- name: reload firewall
+  shell:
+    cmd: firewall-cmd --reload
+  ignore_errors: yes
+
+- name: restart http service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes  
+

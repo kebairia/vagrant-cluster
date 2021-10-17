@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable USB auth
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/usb-auth.sh
+
+[Install]
+WantedBy=multi-user.target

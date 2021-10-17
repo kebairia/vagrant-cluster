@@ -1,0 +1,21 @@
+---
+# handlers file for esiedge.base-sys
+- name: restart_net
+  shell: systemctl restart NetworkManager
+- name: restart_rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+
+- name: restart_sshd
+  service:
+    name: sshd
+    state: restarted
+
+- name: start usb-auth-service
+  service:
+    name: usb-auth.service
+    state: started
+    enabled: yes
+- name: load sysctl settings
+  shell: sysctp -p 

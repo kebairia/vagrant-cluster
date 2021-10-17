@@ -1,0 +1,69 @@
+failover peer "failover-dhcp" {
+  primary; # This defines the master
+  address 192.168.2.2;
+  port 647;
+  peer address 192.168.2.3;
+  peer port 647;
+  max-response-delay 60;
+  max-unacked-updates 10;
+  mclt 3600;
+  split 128; # 128 is balanced; use 255 if primary is 100% responsible until failure
+  load balance max seconds 3;
+}
+
+authoritative;
+allow booting;
+allow bootp;
+# next-server 10.11.1.4; # Katello TFTP
+filename "pxelinux.0";
+default-lease-time 86400; # 1 day
+max-lease-time 86400; # 1 day
+
+ddns-update-style interim;
+
+update-static-leases on;
+one-lease-per-client on;
+
+# We generated the rndc-key when setting up DNS servers
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "T0+1uWvaiKLkhWutTNhsGvLw7m4CXbjHr+3CrDwQP5ZMNHeRSvghg2XxQvT3uGVwNle9oMvBEcjB+4GEPDK1Qg==";
+};
+# We created zones when setting up DNS servers
+zone 2.168.192.in-addr.arpa {
+  primary 192.168.2.2;
+  key "rndc-key";  
+}
+zone esiedge.local {
+  primary 192.168.2.2;
+  key "rndc-key";
+}
+
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 192.168.1.255;
+  option routers 192.168.1.1;
+  option domain-name-servers dns1.esiedge.local, dns2.esiedge.local;
+  option domain-search "esiedge.local";
+  pool {
+    failover peer "failover-dhcp";
+    range 192.168.2.40 192.168.2.59;
+  }
+}
+
+# DHCP leases for PXE boot
+host fog {
+  hardware ethernet 0E:51:ED:6E:01:02;
+  fixed-address 192.168.1.102;
+  option host-name "fog.esiedge.local";
+}
+host edge {
+  hardware ethernet 0E:51:ED:6E:01:01;
+  fixed-address 192.168.1.101;
+  option host-name "edge.esiedge.local";
+}
+host srv {
+  hardware ethernet 0E:51:ED:6E:01:00;
+  fixed-address 192.168.1.100;
+  option host-name "srv.esiedge.local";
+}

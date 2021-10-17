@@ -1,0 +1,31 @@
+---
+- name: install a dhcp server using a role
+  hosts: server.centos.com
+  user: alaa
+  become: true  
+  
+  vars:
+  
+    
+    dhcp_subnets:
+      - ip: 192.168.122.0
+        netmask: 255.255.255.0
+        range_begin: 192.168.122.50
+        range_end: 192.168.122.100
+        routers: 192.168.122.1
+        broadcast-address: 192.168.122.254
+        default_lease_time: 800
+        max_lease_time: 7200 
+        domain_name_servers: x.x.x.x
+      
+      
+          
+
+  
+
+
+  roles:
+    - role: dhcp_role
+
+
+

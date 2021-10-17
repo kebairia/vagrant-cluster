@@ -1,0 +1,16 @@
+---
+# vars file for esiedge.base-sys
+user: vagrant
+skel_dir_files:
+  - skel/.bashrc
+  - skel/.bash_profile
+  - skel/.bash_logout
+packages:
+  - vim
+  - bash-completion
+  - bind-utils
+  - net-tools
+  - rsyslog
+update: true
+dns_master_ip: 192.168.3.2
+dns_slave_ip: 192.168.3.3

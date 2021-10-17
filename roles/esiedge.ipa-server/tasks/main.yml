@@ -1,0 +1,48 @@
+---
+# tasks file for esiedge.ipa-server
+#- name: add a hostname entry
+#  lineinfile:
+#    dest=/etc/hosts
+#    regexp= ' {{ ansible_fqdn }}? '
+#    line= " {{ ansible_default_ipv4.address }}"  "{{ ansible_fqdn }} "
+#    owner=root
+#    group=root
+#    mode=0644"
+
+- name: add a hostname entry
+  copy:
+    content: "{{ ansible_default_ipv4.address }}  {{ ansible_fqdn }}"
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644  
+
+- name: install the ipa server necessary package
+  package:
+    name: "{{ ipaserver_packages }}"
+    state: present
+ #loop: "{{ ipaserver_packages }}"
+
+- name: Run the installer
+  shell:  ipa-server-install -a {{ipaserver_admin_password}} --hostname={{ansible_fqdn}} -r {{ipaserver_realm}} -p {{ipaserver_dir_admin_password}} -n {{ipaserver_domain}} -U
+
+- name: start and enbale th sssd service
+  service:
+    name: sssd
+    state: started
+    enabled: yes
+
+- name: open the necessary services on the firewall
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop: "{{ firewall_services }}"
+  notify: reload the firewall    
+
+
+
+          
+         
+          
+    

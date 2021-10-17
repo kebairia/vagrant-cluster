@@ -1,0 +1,87 @@
+
+- name: install mariadb requirement
+  package:
+    name: python3-PyMySQL
+    state: present
+
+
+
+- name: install mariadb centos8
+  package:
+    name: mariadb-server
+    state: present    
+
+
+- name: start and enable mariadb service
+  service:
+    name: mariadb
+    state: started
+    enabled: yes  
+
+  
+#Mariadb security installation      
+- name: create root accounts and password
+  community.mysql.mysql_user:
+    check_implicit_admin: no
+    name: root
+    password: "{{ mariadb_root_password }}"  
+    priv: '*.*:ALL,GRANT'
+    state: present  
+  ignore_errors: yes
+
+
+- name: delete the test database
+  community.mysql.mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"  
+    name: test
+    state: absent  
+  ignore_errors: yes
+
+
+- name: Removes all anonymous user accounts
+  community.mysql.mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"  
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: Disallow root login remotely
+  community.mysql.mysql_query:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"  
+    query:
+       - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+  ignore_errors: yes
+
+- name: Reload privilege tables
+  community.mysql.mysql_query:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"  
+    query:
+      - FLUSH PRIVILEGES 
+  ignore_errors: yes  
+    # create a database and user for zabbix
+- name: create new database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ zabbix_server_database_name }}"
+    state: present
+    collation: utf8_bin
+    encoding: utf8
+  ignore_errors: yes
+
+
+- name: create a user for the database
+  community.mysql.mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ zabbix_server_database_user }}"
+    password: "{{ zabbix_server_database_password }}"
+    priv: 'zabbix.*:ALL,GRANT'
+    state: present 
+  ignore_errors: yes    
+
+

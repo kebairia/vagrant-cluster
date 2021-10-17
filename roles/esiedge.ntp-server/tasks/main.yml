@@ -1,0 +1,23 @@
+---
+# tasks file for esiedge.ntp-server
+- name: install "{{ ntp_packages }}"
+  package:
+    name: "{{ ntp_packages }}"
+    state: present
+- name: enable the "{{ ntp_service }}"
+  service:
+    name: "{{ ntp_service }}"
+    state: started
+    enabled: yes
+- name: setting "{{ ntp_package }}" configuration file
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+  notify: restart_chronyd
+- name: allow ntp on firewall
+  firewalld:
+    service: ntp
+    state: enabled
+    permanent: yes
+    immediate: yes
+  notify: reload_firewalld

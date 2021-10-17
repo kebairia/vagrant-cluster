@@ -1,0 +1,5 @@
+---
+# handlers file for esiedge.ipa-server
+- name: reload the firewall
+  shell:
+    cmd: firewall-cmd --reload

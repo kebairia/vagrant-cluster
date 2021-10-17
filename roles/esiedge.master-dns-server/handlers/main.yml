@@ -1,0 +1,10 @@
+---
+# handlers file for esiedge.dns-server
+- name: restart_dns
+  service:
+    name: "{{ dns_service }}"
+    state: restarted
+- name: restart_net
+  shell: systemctl restart NetworkManager
+- name: reload_firewalld
+  shell: firewall-cmd --reload

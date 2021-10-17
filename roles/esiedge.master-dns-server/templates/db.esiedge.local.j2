@@ -1,0 +1,32 @@
+$TTL 86400	; 1 day
+@			IN SOA	dns1.esiedge.local. root.esiedge.local. (
+				2018010700 ; Serial
+				3600       ; Refresh (1 hour)
+				3600       ; Retry (1 hour)
+				604800     ; Expire (1 week)
+				3600       ; Minimum (1 hour)
+)
+@		NS	dns1.esiedge.local.
+@		NS	dns2.esiedge.local.
+@		A	192.168.3.2	
+@		A	192.168.3.3	
+dns1		A	192.168.3.2
+dns2		A	192.168.3.3
+admin1		A	192.168.3.2
+admin2		A	192.168.3.3
+lb1		A	192.168.3.11
+lb2		A	192.168.3.12
+syslog1		A	192.168.3.21
+syslog2		A	192.168.3.22
+ldap1		A	192.168.3.31
+ldap2		A	192.168.3.32
+mon		A	192.168.3.41
+gfs1		A	192.168.3.51
+gfs2		A	192.168.3.52
+gfs3		A	192.168.3.53
+gfs4		A	192.168.3.54
+gfs5		A	192.168.3.55
+gfs6		A	192.168.3.56
+master1		A	192.168.3.201
+master2		A	192.168.3.202
+

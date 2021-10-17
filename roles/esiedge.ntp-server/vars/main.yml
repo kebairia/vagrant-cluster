@@ -1,0 +1,4 @@
+---
+# vars file for esiedge.ntp-server
+ntp_packages: chrony
+ntp_service: chronyd

@@ -1,0 +1,51 @@
+---
+# check and confirm that the /var has enough space
+# use a separate drive (lvm or raid) to mount the /var/log directory
+- name: install rsyslog packages
+  package:
+    name: "{{ rsyslog_packages }}"
+    state: present
+# starting the firewalld
+- name: start/enable firewalld
+  service: name=firewalld state=started enabled=yes
+# Service config
+- name: enable rsyslog service
+  service:
+    name: rsyslog 
+    state: started 
+    enabled: yes
+- name: adding selinux context
+  seport:
+    ports: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    setype: syslogd_port_t
+    state: present
+  loop:
+    - { port: 514, proto: tcp }
+
+# configuration file
+- name: setting the rsyslog configuration file
+  template:
+    src: rsyslog-server.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+  notify: restart_rsyslog
+# Firewalld
+- name: adding rsyslog to firewalld
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  loop:
+    - 514/tcp
+    # - 514/udp
+  notify: reload_firewalld
+# - name: adding rich-rule for syslog on firewalld
+#   firewalld:
+#     rich_rule: rule family="{{item.ip}}" source address="{{ item.addr }}" port port=514 protocol="{{item.proto}}" accept
+#     permanent: yes
+#     state: enabled
+#   loop:
+#     - { ip: "ipv4", addr: "192.168.2.10/32", proto: "tcp" }
+#   notify: reload_firewalld

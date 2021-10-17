@@ -1,0 +1,45 @@
+---
+# tasks file for esiedge.pacemaker
+# i used the shell module, because this is the fastest way
+# dnf and yum modules takes forever -_-
+- name: Enabling the ha repo
+  shell: dnf config-manager --enable ha appstream baseos
+
+- name: installing pacemaker needed packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ pcmk_packages }}"
+
+- name: installing fence agents 
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ fence_packages }}"
+
+- name: Allow cluster services through firewall
+  firewalld:
+    service: high-availability
+    state: enabled
+    permanent: yes
+  notify: reload_firewalld
+# - name: setting SELinux
+#   sefcontext:
+
+- name: enable pcsd service
+  service:
+    name: pcsd
+    state: started
+    enabled: yes
+
+# use ansible vault for this task
+# - name: changing the hacluster account password
+#   shell: echo "{{ hacluster_password }}" | passwd --stdin hacluster
+#   register: pswd_chg
+# - debug:
+#     var: pswd_chg.rc
+
+- name: fixing the /etc/hosts file
+  template:
+    src: hosts.j2
+    dest: /etc/hosts

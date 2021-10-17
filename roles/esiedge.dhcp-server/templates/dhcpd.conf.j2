@@ -1,0 +1,117 @@
+failover peer "failover-dhcp" {
+  secondary; # This defines the slave
+  address 10.11.1.3;
+  port 647;
+  peer address 10.11.1.2;
+  peer port 647;
+  max-response-delay 60;
+  max-unacked-updates 10;
+  load balance max seconds 3;
+}
+
+authoritative;
+allow booting;
+allow bootp;
+next-server 10.11.1.4; # Katello TFTP
+filename "pxelinux.0";
+default-lease-time 86400; # 1 day
+max-lease-time 86400; # 1 day
+
+ddns-update-style interim;
+
+update-static-leases on;
+one-lease-per-client on;
+
+# We generated the rndc-key when setting up DNS servers
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "T0+1uWvaiKLkhWutTNhsGvLw7m4CXbjHr+3CrDwQP5ZMNHeRSvghg2XxQvT3uGVwNle9oMvBEcjB+4GEPDK1Qg==";
+};
+# We created zones when setting up DNS servers
+zone 1.11.10.in-addr.arpa {
+  primary 10.11.1.2;
+  key "rndc-key";  
+}
+zone hl.local {
+  primary 10.11.1.2;
+  key "rndc-key";
+}
+
+subnet 10.11.1.0 netmask 255.255.255.0 {
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 10.11.1.255;
+  option routers 10.11.1.1;
+  option domain-name-servers dns1.hl.local, dns2.hl.local;
+  option domain-search "hl.local";
+  pool {
+    failover peer "failover-dhcp";
+    range 10.11.1.40 10.11.1.59;
+  }
+}
+
+# DHCP leases for PXE boot
+host ldap1 {
+  hardware ethernet 00:22:FF:00:00:11;
+  fixed-address 10.11.1.11;
+  option host-name "ldap1";
+}
+host ldap2 {
+  hardware ethernet 00:22:FF:00:00:12;
+  fixed-address 10.11.1.12;
+  option host-name "ldap2";
+}
+host monitoring {
+  hardware ethernet 00:22:FF:00:00:13;
+  fixed-address 10.11.1.13;
+  option host-name "monitoring";
+}
+host syslog {
+  hardware ethernet 00:22:FF:00:00:14;
+  fixed-address 10.11.1.14;
+  option host-name "syslog";
+}
+host storage1 {
+  hardware ethernet 00:22:FF:00:00:15;
+  fixed-address 10.11.1.15;
+  option host-name "storage1";
+}
+host storage2 {
+  hardware ethernet 00:22:FF:00:00:16;
+  fixed-address 10.11.1.16;
+  option host-name "storage2";
+}
+host db1 {
+  hardware ethernet 00:22:FF:00:00:17;
+  fixed-address 10.11.1.17;
+  option host-name "db1";
+}
+host db2 {
+  hardware ethernet 00:22:FF:00:00:18;
+  fixed-address 10.11.1.18;
+  option host-name "db2";
+}
+host proxy1 {
+  hardware ethernet 00:22:FF:00:00:19;
+  fixed-address 10.11.1.19;
+  option host-name "proxy1";
+}
+host proxy2 {
+  hardware ethernet 00:22:FF:00:00:20;
+  fixed-address 10.11.1.20;
+  option host-name "proxy2";
+}
+host web1 {
+  hardware ethernet 00:22:FF:00:00:21;
+  fixed-address 10.11.1.21;
+  option host-name "web1";
+}
+host web2 {
+  hardware ethernet 00:22:FF:00:00:22;
+  fixed-address 10.11.1.22;
+  option host-name "web2";
+}
+host backup {
+  hardware ethernet 00:22:FF:00:00:23;
+  fixed-address 10.11.1.23;
+  option host-name "backup";
+}

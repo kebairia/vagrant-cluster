@@ -1,0 +1,5 @@
+---
+# vars file for esiedge.master-dhcp-server
+dhcp_package: dhcp-server
+dhcp_service: dhcpd
+dhcp_firewall_service: dhcp

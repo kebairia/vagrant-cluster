@@ -1,0 +1,7 @@
+---
+# vars file for esiedge.vpn-server
+vpn_packages:
+  - openvpn
+  - openssl
+  - liblzo2-2
+  - lzop

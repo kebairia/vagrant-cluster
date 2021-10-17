@@ -1,0 +1,5 @@
+---
+# vars file for esiedge.dns-server
+rsyslog_packages: 
+  - rsyslog
+  - policycoreutils-python-utils

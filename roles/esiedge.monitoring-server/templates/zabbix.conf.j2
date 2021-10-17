@@ -1,0 +1,25 @@
+[zabbix]
+user = apache
+group = apache
+
+listen = /run/php-fpm/zabbix.sock
+listen.acl_users = apache,nginx
+listen.allowed_clients = 127.0.0.1
+
+pm ={{ pm }}
+pm.max_children={{ pm_max_children }}
+pm.start_servers={{ pm_start_servers }}
+pm.min_spare_servers={{ pm_min_spare_servers }}
+pm.max_spare_servers={{ pm_max_spare_servers }}
+
+php_value[session.save_handler]={{ php_value_session_save_handler }}
+php_value[session.save_path]={{ php_value_session_save_path }}
+
+php_value[max_execution_time]={{ php_value_max_execution_time }}
+php_value[memory_limit]={{ php_value_memory_limit }}
+php_value[post_max_size]={{ php_value_post_max_size }}
+php_value[upload_max_filesize]={{ php_value_upload_max_filesize }}
+php_value[max_input_time]={{ php_value_max_input_time }}
+php_value[max_input_vars]={{ php_value_max_input_vars }}
+php_value[date.timezone]={{ php_value_time_zone }}
+

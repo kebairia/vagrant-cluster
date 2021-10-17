@@ -1,0 +1,79 @@
+---
+## Initial configuration
+#- include: ../initial_config.yml
+# Installing the dns package
+- name: install bind packages 
+  package:
+    name: "{{ dns_packages }}"
+    state: present
+- name: Enable dns on Firewall
+  firewalld:
+    service: dns
+    state: enabled
+    permanent: yes
+  notify: reload_firewalld
+- name: Setting up Logging directories
+  file:
+    path: /var/log/named
+    state: directory
+    owner: named
+    group: named
+    mode: 0700
+- name: RNDC Key Configuration
+  shell: rndc-confgen -a -b 512 -r /dev/urandom 
+  register: rndc_out
+- name: Harden rndc.key ownership and persmissions
+  file:
+    path: /etc/rndc.key
+    owner: root
+    group: named
+    mode: 0640
+- debug:
+    var: rndc_out
+- name: setting up named configuration file
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+- name: setting up named databases
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: named
+    group: named
+  loop:
+    - { src: 'db.esiedge.local.j2', dest: '/var/named/data/db.esiedge.local'}
+    - { src: 'db.3.168.192.j2', dest: '/var/named/data/db.3.168.192'}
+- name: setting SELinux context for named database files
+  sefcontext:
+    target: '/var/named/data(/.*)?'
+    setype: named_zone_t
+    state: present
+- name: Apply new SELinux file context to filesystem
+  command: restorecon -Rv /var/named/data
+- name: Apply a new selinux bool variable
+  shell: setsebool -P named_write_master_zones=1
+
+- name: Start named service
+  service:
+    name: named
+    state: restarted
+    enabled: yes
+- name: configure network
+  nmcli:
+    conn_name: "{{ item.conn }}"
+    ifname: "{{ item.ifname }}"
+    type: ethernet
+    autoconnect: true
+    state: present
+    dns4: 127.0.0.1
+    dns4_ignore_auto: yes
+  loop:
+    - { conn: 'System eth0', ifname: 'eth0' }
+    - { conn: 'System eth1', ifname: 'eth1' }
+  notify: restart_net
+  failed_when: false
+- name: RNDC status
+  shell: rndc status
+  register: rndc_status_out
+- debug: 
+    var: rndc_status_out

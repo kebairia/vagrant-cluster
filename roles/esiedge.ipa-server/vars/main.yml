@@ -1,0 +1,12 @@
+---
+# vars file for esiedge.ipa-server
+ipaserver_packages: ipa-server
+  #- bind-dyndb-ldap
+  # - ipa-server-dns
+
+firewall_services:
+  - https
+  - ldaps
+  - kerbros
+  - ntp
+

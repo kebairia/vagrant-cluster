@@ -1,0 +1,157 @@
+# tasks file for esiedge.base-sys
+---
+# - name: update the system
+#   package:
+#     name: "*"
+#     state: latest
+#   when: "{{ update }}"
+- name: Compress Old Repos into /root/centos_old_repos.tar.gz
+  archive:
+    path: /etc/yum.repos.d/*
+    dest: /root/centos_old_repos.tar.gz
+    format: gz
+
+- name: disable all repos
+  shell: |
+    dnf repolist all \
+    | cut -d " " -f1  \
+    | tail -n +2 \
+    | xargs dnf config-manager --disable
+
+# 3- Mount the Centos-DVD on media
+- name: Mounting CentOS-DVD on /media
+  mount:
+    path: /media
+    src: /dev/sr0
+    fstype: iso9660
+    opts: ro
+    state: mounted
+    boot: yes
+  register: mnt_stat
+  failed_when: False
+      
+# 4- Create a local repo from the Centos-DVD
+# 4.1- local-baseos
+- name: check if the local-baseos repos exist
+  stat:
+    path: /etc/yum.repos.d/local-baseos.repo
+  register: baseos_stat_result
+- name: check if the local-appstream repos exist
+  stat:
+    path: /etc/yum.repos.d/local-appstream.repo
+  register: appstream_stat_result
+
+- name: adding local yum repo
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.desc }}"
+    baseurl: "{{ item.baseurl }}"
+    enabled: yes
+    gpgcheck: no
+  loop:
+    - { name: "local-baseos", desc: "Local YUM repo (baseos)", baseurl: "file:///media/BaseOS"}
+    - { name: "local-appstream", desc: "Local YUM repo (appastream)", baseurl: "file:///media/AppStream"}
+  when: not baseos_stat_result.stat.exists and not appstream_stat_result.stat.exists 
+
+- name: Clean YUM cache
+  shell: yum clean all
+  changed_when: False
+  when: mnt_stat.changed == True
+
+# Copy the root/user bashrc templates and manage its permissions 
+- name: Copy "Bashrc" templates (for root, users, and /etc/skel dir)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0644
+  loop:
+    - { src: "root_bashrc", dest: /root/.bashrc, owner: root, group: root}
+    - { src: "user_bashrc", dest: /etc/skel/.bashrc, owner: root, group: root}
+    - { src: "user_bashrc", dest: "/home/{{ user }}/.bashrc", owner: "{{ user }}", group: "{{ user }}" }
+
+- name: Enable SELinux (enforcing mode, targeted policy)
+  selinux:
+    policy: targeted
+    state: enforcing
+
+  # NETWORK Configuration
+  # dns dhcp ..etc
+# - name: extract wrong dns entries
+#   script: ../files/delete_dns.sh
+#   failed_when: false
+- name: configure network
+  community.general.nmcli:
+    conn_name: "{{ item.con }}"
+    ifname: "{{ item.ifname }}"
+    type: ethernet
+    autoconnect: true
+    state: present
+    dns4:
+    - "{{ dns_master_ip }}"
+    - "{{ dns_slave_ip }}"
+    dns4_ignore_auto: yes
+  loop:
+    - { con: "System eth0", ifname: "eth0" }
+    - { con: "System eth1", ifname: "eth1" }
+    - { con: "System eth2", ifname: "eth2" }
+    - { con: "System eth3", ifname: "eth3" }
+  failed_when: false
+  notify: restart_net
+
+# ssh config, enable password
+- name: enable password authentication for ssh
+  shell: |
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+  notify: restart_sshd
+#
+# package [client side]
+#
+#---------------------
+# INSTALLING PACKAGES
+#---------------------
+- name: install some packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+# i need a client role
+# - name: disabling a repo [testing]
+#   shell: |
+#     sed -i -e "s/enabled=1/enabled=0/g" /etc/yum.repos.d/CentOS-Gluster-7.repo
+# - name: enable centos-gluster7 repo
+#   dnf:
+#     enablerepo: centos-gluster7
+#     name: "{{ item }}" 
+#   loop: 
+#     - glusterfs
+#     - glusterfs-fuse
+
+# starting the firewalld
+- name: start/enable firewalld
+  service: name=firewalld state=started enabled=yes
+
+#------------------
+# ENABLING SERVICES
+#------------------
+# Service config
+- name: enable rsyslog service
+  service:
+    name: rsyslog 
+    state: started 
+    enabled: yes
+# configuration file
+- name: setting the rsyslog configuration file [client]
+  template:
+    src: rsyslog-client.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+  notify: restart_rsyslog
+
+  #
+  # LDAP configuration [client]
+  #
+

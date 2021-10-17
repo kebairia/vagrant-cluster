@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# base configuration
+Vagrant.configure("2") do |config|
+  # box images are available in Libvirt storage pool. 
+  # If not, upload it to remote Libvirt storage pool as new volume.
+  config.vm.box = "centos/8"
+
+  # Network
+  #config.vm.network "private_network", ip: "192.168.33.11"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  #config.vm.network "public_network", ip: "192.168.33.200"
+
+  #config.vm.synced_folder ".", "/data", :nfs => { :mount_options => ["dmode=777", "fmode=666"] }
+  #config.vm.synced_folder ".", "/data"
+
+  # Provider-specific configuration 
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpus = 1
+    libvirt.storage :file, :device => :cdrom, :path => '/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso'
+  end
+  # SHELL SCRIPTING
+   #config.vm.provision "shell", path: "" or
+   #config.vm.provision "shell", inline: <<-SHELL
+     #apt-get update
+     #apt-get install -y apache2
+   #SHELL
+
+  # ANSIBLE
+  config.vm.provision "ansible" do |ansible|
+    ansible.verbose = "v"
+    ansible.playbook = "./playbook.yml"
+  end
+end

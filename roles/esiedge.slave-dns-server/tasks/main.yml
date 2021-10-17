@@ -1,0 +1,53 @@
+---
+## Initial configuration
+#- include: ../initial_config.yml
+# Installing the dns package
+- name: install bind packages 
+  package:
+    name: "{{ dns_packages }}"
+    state: present
+
+- name: Enable dns on Firewall
+  firewalld:
+    service: dns
+    state: enabled
+    permanent: yes
+  notify: reload_firewalld
+- name: Setting up Logging directories
+  file:
+    path: /var/log/named
+    state: directory
+    owner: named
+    group: named
+    mode: 0700
+
+- name: setting up named configuration file
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+
+- name: Apply a new selinux bool variable
+  shell: setsebool -P named_write_master_zones=1
+
+- name: Restart named service
+  service:
+    name: named
+    state: restarted
+    enabled: yes
+- name: configure network
+  nmcli:
+    conn_name: "{{ item.con }}"
+    ifname: "{{ item.ifname }}"
+    type: ethernet
+    autoconnect: true
+    state: present
+    dns4:
+    - "{{ dns_master_ip }}"
+    - 127.0.0.1
+    dns4_ignore_auto: true
+  loop:
+    - { con: 'System eth0', ifname: "eth0" }
+    - { con: 'System eth1', ifname: "eth1" }
+    - { con: 'System eth2', ifname: "eth2" }
+  failed_when: false
+  notify: restart_net

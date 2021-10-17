@@ -1,0 +1,15 @@
+---
+# defaults file for zabbix_monitoring_server
+
+#default value for database configuration
+zabbix_server_database_name: zabbix
+zabbix_server_database_user: zabbix
+zabbix_server_database_password: zabbix
+zabbix_server_database_host: localhost
+mariadb_root_password: root
+
+
+php_value_time_zone: Africa/Algiers
+
+zabbix_documentation_path: /usr/share/doc/zabbix-server-mysql/
+   

@@ -1,0 +1,9 @@
+---
+# handlers file for esiedge.glusterfs
+- name: restart_net
+  service:
+    name: NetworkManager
+    state: restarted
+
+- name: reload_firewalld
+  shell: firewall-cmd --reload

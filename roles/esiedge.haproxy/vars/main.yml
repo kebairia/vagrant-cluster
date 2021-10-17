@@ -1,0 +1,5 @@
+---
+# vars file for esiedge.haproxy
+haproxy_package: haproxy
+haproxy_service: haproxy
+dns_dhcp_ip: 192.168.2.10

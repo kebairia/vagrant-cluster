@@ -1,0 +1,12 @@
+---
+# vars file for esiedge.base-sys
+user: admin
+skel_dir_files:
+  - skel/.bashrc
+  - skel/.bash_profile
+  - skel/.bash_logout
+packages:
+  - vim
+  - bash-completion
+  - bind-utils
+  - net-tools

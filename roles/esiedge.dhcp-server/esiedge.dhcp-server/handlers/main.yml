@@ -1,0 +1,10 @@
+---
+# handlers file for esiedge.dhcp-server
+- name: restart the dhcp service
+  service:
+          name: "{{dhcp_service}}"
+          state: restarted
+- name: reload_firwalld
+  shell:
+          cmd: firewall-cmd --reload
+

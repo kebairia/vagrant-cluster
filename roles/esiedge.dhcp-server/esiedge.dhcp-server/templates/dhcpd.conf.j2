@@ -1,0 +1,114 @@
+
+# configuration file for dhcp server!
+#
+# 
+
+#
+# Global options
+#global authoritative
+{% if dhcp_global_authoritative is defined %}
+{{ dhcp_global_authoritative }};
+{% endif %}
+
+#define the log facility
+{% if dhcp_global_log_facility is defined %}
+log-facility {{ dhcp_global_log_facility }};
+{% endif %}
+
+#define the global lease time
+{% if dhcp_global_default_lease_time is defined %}
+default-lease-time {{ dhcp_global_default_lease_time }};
+{% endif %}
+
+#define the maximum lease time
+{% if dhcp_global_max_lease_time is defined %}
+max-lease-time {{ dhcp_global_max_lease_time }};
+{% endif %}
+
+#define the global subnetmask
+{% if dhcp_global_subnet_mask is defined %}
+option subnet-mask {{ dhcp_global_subnet_mask }};
+{% endif %}
+
+#define the global broadcast adress
+{% if dhcp_global_broadcast_address is defined %}
+option broadcast-address {{ dhcp_global_broadcast_address }};
+{% endif %}
+
+#define the global routers
+{% if dhcp_global_routers is defined %}
+option routers {{ dhcp_global_routers }};
+{% endif %}
+
+#define the global domain name 
+{% if dhcp_global_domain_name is defined %}
+option domain-name {{ dhcp_global_domain_name }};
+{% endif %}
+
+#define the global ntp server
+{% if dhcp_global_ntp_servers is defined %}
+{% if dhcp_global_ntp_servers is string %}
+option ntp-servers {{ dhcp_global_ntp_servers }};
+{% else %}
+option ntp-servers {{ dhcp_global_ntp_servers|join(', ') }};
+{% endif %}
+{% endif %}
+
+#define the global domain name servers
+{% if dhcp_global_domain_name_servers is defined %}
+{% if dhcp_global_domain_name_servers is string %}
+option domain-name-servers {{ dhcp_global_domain_name_servers }};
+{% else %}
+option domain-name-servers {{ dhcp_global_domain_name_servers }};
+{% endif %}
+{% endif %}
+
+
+
+# Subnet declarations
+
+{% for subnet in dhcp_subnets %}
+subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
+{% if subnet.default_lease_time is defined %}
+  default-lease-time {{ subnet.default_lease_time }};
+{% endif %}
+{% if subnet.max_lease_time is defined %}
+  max-lease-time {{ subnet.max_lease_time }};
+{% endif %}
+{% if subnet.routers is defined %}
+  option routers {{ subnet.routers }};
+{% endif %}
+{% if subnet.subnet_mask is defined %}
+  option subnet-mask {{ subnet.subnet_mask }};
+{% endif %}
+{% if subnet.domain_search is defined %}
+{% if subnet.domain_search is string %}
+  option domain-search "{{ subnet.domain_search }}";
+{% else %}
+  option domain-search "{{ subnet.domain_search|join('", "') }}";
+{% endif %}
+{% endif %}
+{% if subnet.domain_name_servers is defined %}
+{% if subnet.domain_name_servers is string %}
+  option domain-name-servers {{ subnet.domain_name_servers }};
+{% else %}
+  option domain-name-servers {{ subnet.domain_name_servers|join(', ') }};
+{% endif %}
+{% endif %}
+{% if subnet.ntp_servers is defined %}
+{% if subnet.ntp_servers is string %}
+option ntp-servers {{ subnet.ntp_servers }};
+{% else %}
+option ntp-servers {{ subnet.ntp_servers|join(', ') }};
+{% endif %}
+{% endif %}
+{% if subnet.range_begin is defined and subnet.range_end is defined %}
+  range {{ subnet.range_begin }} {{ subnet.range_end }};
+{% endif %}
+}
+{% endfor %}
+
+
+
+
+

@@ -1,0 +1,75 @@
+# tasks file for esiedge.base-sys
+---
+- name: Initial Configuration
+  debug:
+    msg: "this is the initial configuration"
+###############
+    # Local Repo
+    ###############
+    # First: compress the old repos --> /root/centos_old_repos.tar.gz
+    # if they exist
+    # needs when statement
+- name: Compress Old Repos into /root/centos_old_repos.tar.gz
+  archive:
+    path: /etc/yum.repos.d/*
+    dest: /root/centos_old_repos.tar.gz
+    format: gz
+
+    # Then Delete them if they exists also.
+- name: Delete Old Repos
+  shell: rm -rf /etc/yum.repos.d/*.repo
+
+    # 3- Mount the Centos-DVD on media
+- name: Mounting CentOS-DVD on /media
+  mount:
+    path: /media
+    src: /dev/sr0
+    fstype: iso9660
+    opts: ro,noauto
+    state: mounted
+  register: mnt_stat
+  failed_when: False
+      
+# 4- Create a local repo from the Centos-DVD
+# 4.1- local-baseos
+- name: Add Local YUM repo (BaseOS)
+  yum_repository:
+    name: Local-baseos
+    description: Local YUM repo (baseos)
+    baseurl: file:///media/BaseOS
+    enabled: yes
+    gpgcheck: no
+# 4.2- local-appstream
+- name: Add Local YUM repo (AppStream)
+  yum_repository:
+    name: Local-appstream
+    description: Local YUM repo (appstream)
+    baseurl: file:///media/AppStream
+    enabled: yes
+    gpgcheck: no
+
+- name: Clean YUM cache
+  shell: yum clean all
+  changed_when: False
+  when: mnt_stat.changed == True
+# Copy the root/user bashrc templates and manage its permissions 
+- name: Copy root_bashrc template
+  copy:
+    src: ./templates/root_bashrc
+    dest: /root/.bashrc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy user_bashrc template
+  copy:
+    src: ./templates/user_bashrc
+    dest: /home/{{user}}/.bashrc
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0644
+- name: install some packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"

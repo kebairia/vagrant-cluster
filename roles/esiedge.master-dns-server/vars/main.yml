@@ -1,0 +1,11 @@
+---
+# vars file for esiedge.dns-server
+dns_packages:
+  - bind
+  - bind-utils
+  - policycoreutils-python-utils
+dns_service: named
+firewall_dns_service: dns
+dns_db: 
+  - db.esiedge.local
+  - db.2.168.192

@@ -1,0 +1,2 @@
+#!/bin/bash
+find / -ignore_readdir_race \( -nouser -print -exec chown root {} \; \) , \( -nogroup -print -exec chgrp root {} \; \)

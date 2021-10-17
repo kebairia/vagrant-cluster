@@ -1,0 +1,12 @@
+---
+# handlers file for esiedge.ntp-server
+- name: restart_net
+  service:
+    name: NetworkManager
+    state: restarted
+- name: reload_firewalld
+  shell: firewall-cmd --reload
+- name: restart_chronyd
+  service:
+    name: chronyd
+    state: restarted

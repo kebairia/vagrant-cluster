@@ -1,0 +1,18 @@
+# -*- mode: conf -*-
+[general]
+user=vagrant
+[packages]
+editor = vim
+network = bind-utils
+shell = bash-completion
+[servers_ip]
+dns_master  = 192.168.2.2
+dns_slave   = 192.168.2.3
+dhcp_master = 192.168.2.2
+dhcp_master = 192.168.2.3
+lb1         = 192.168.2.11
+lb2         = 192.168.2.12
+syslog1     = 192.168.2.31
+syslog2     = 192.168.2.32
+ldap1       = 192.168.2.41
+ldap2       = 192.168.2.42

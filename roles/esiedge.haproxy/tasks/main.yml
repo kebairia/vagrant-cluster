@@ -1,0 +1,35 @@
+---
+# tasks file for esiedge.haproxy
+- name: install {{ haproxy_package }}
+  package:
+    name: "{{ haproxy_package }}"
+    state: present
+    # firewalld
+- name: start/enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+- name: copy haproxy systemd service
+  template:
+    src: haproxy.service
+    dest: /etc/systemd/system/haproxy.service
+
+- name: enable and reload the new {{ haproxy_service }}
+  service:
+    name: haproxy
+    state: reloaded
+    enabled: yes
+- name: setting HAProxy configuration file
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0600
+- name: start HAProxy service
+  service:
+    name: haproxy
+    state: started
+
+...
