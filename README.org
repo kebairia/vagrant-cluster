@@ -1,32 +1,52 @@
 * Configuration file
 * Vagrantfile
 * Network
-* *EXAMPLE*
+* Usage
 setup you server's information on [[file:servers.yml]] file
   #+begin_src yaml
     - name: test1
-      ip: 192.168.121.100
       box: centos/8
       memory: 512
       cpus: 1
       hostname: test1.esiedge.local
-      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      mnm: "0E:51:ED:6E:01:00"
+      add_int: "true"
+      ints:
+        - ip: 192.168.3.100
+          method: "static"
+          type: "public_network"
+          mac: "0E:51:ED:6E:11:00" 
+        - ip: 192.168.4.100
+          method: "static"
+          type: "private_network"
+          mac: "0E:51:ED:6E:21:00" 
       add_disks: "true"
-      disk_size: ['8G', '4G']
-      pool: "/home/zakaria/dox/vms/esiedge/"
-      playbook: "./myplaybook.yml"
+      disks: ["4G", "200G"]
+      pool: "esiedge"
+      prov: shell
+      prov_file: "./configure-base-config.yml"
     
     - name: test2
-      ip: 192.168.121.150
-      box: centos/7
-      memory: 1024
+      box: centos/8
+      memory: 512
       cpus: 2
       hostname: test2.esiedge.local
-      cdrom_storage: "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+      mnm: "0E:51:ED:6E:01:02"
+      add_int: "true"
+      ints:
+        - ip: 192.168.3.102
+          method: "static"
+          type: "public_network"
+          mac: "0E:51:ED:6E:11:02" 
+        - ip: 192.168.4.102
+          method: "static"
+          type: "private_network"
+          mac: "0E:51:ED:6E:21:02" 
       add_disks: "true"
-      disk_size: ['28G', '14G']
-      pool: "/home/zakaria/dox/vms/esiedge/"
-      playbook: "./another_playbook.yml"
+      disks: ["4G", "5G"]
+      pool: "esiedge"
+      prov: shell
+      prov_file: "./configure-base-config.yml"
   #+end_src
 - Bring up the whole infrastructure.
 #+begin_src sh
