@@ -15,26 +15,7 @@
 :TOC:      :include all :ignore this
 :END:
 :CONTENTS:
-- [[#screenshots][Screenshots]]
-- [[#Installation][Installation]]
-  - [[#manual][Manual]]
-    - [[#deps][Dependencies]]
-    - [[#emacs_packages][Emacs Packages]]
-    - [[#system][system]]
-    - [[#files_and_libs][Files and Libraries]]
-  - [[#docker][Docker]]
-- [[#config][Configuration]]
-  - [[#emacs-config][Emacs configuration]]
-    - [[#org][org]]
-      - [[#babel][Babel]]
-    - [[#org-ref][org ref]]
-    - [[#latex][Latex]]
-      - [[#classes][classes]]
-      - [[#minted][minted]]
-      - [[#syntax][syntax highlighting, babel and other configs]]
-    - [[#functions][functions]]
-- [[#Building][Building]]
-- [[#main_structure][Main structure of your org file]]
+- 
 :END:
 * Configuration file
 * Vagrantfile
