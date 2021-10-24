@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.glusterfs
+# vars file for lab.glusterfs
 gfs_repo: centos-release-gluster
 gfs_packages:
   - glusterfs-server
@@ -15,6 +15,6 @@ gfs_fstype: xfs
 gfs_vol: vol_dist
 gfs_bricks: /glusterfs/dist
 gfs_cluster: 
-  - gfs1.esiedge.local
-  - gfs2.esiedge.local
-  - gfs3.esiedge.local
+  - gfs1.lab.local
+  - gfs2.lab.local
+  - gfs3.lab.local

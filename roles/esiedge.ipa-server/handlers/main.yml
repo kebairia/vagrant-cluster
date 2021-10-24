@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.ipa-server
+# handlers file for lab.ipa-server
 - name: reload the firewall
   shell:
     cmd: firewall-cmd --reload

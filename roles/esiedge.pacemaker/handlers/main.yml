@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.pacemaker
+# handlers file for lab.pacemaker
 - name: restart_net
   service:
     name: NetworkManager

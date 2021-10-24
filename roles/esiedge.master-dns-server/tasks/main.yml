@@ -41,7 +41,7 @@
     owner: named
     group: named
   loop:
-    - { src: 'db.esiedge.local.j2', dest: '/var/named/data/db.esiedge.local'}
+    - { src: 'db.lab.local.j2', dest: '/var/named/data/db.lab.local'}
     - { src: 'db.3.168.192.j2', dest: '/var/named/data/db.3.168.192'}
 - name: setting SELinux context for named database files
   sefcontext:

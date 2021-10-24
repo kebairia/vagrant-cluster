@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.dhcp-server
+# tasks file for lab.dhcp-server
 
 - name: install the dhcp package
   package:

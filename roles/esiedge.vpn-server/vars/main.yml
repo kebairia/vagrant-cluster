@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.vpn-server
+# vars file for lab.vpn-server
 vpn_packages:
   - openvpn
   - openssl

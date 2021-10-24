@@ -1,27 +1,27 @@
 $TTL 86400	; 1 day
-@			IN SOA	dns1.esiedge.local. root.esiedge.local. (
+@			IN SOA	dns1.lab.local. root.lab.local. (
 				2018010700 ; Serial
 				3600       ; Refresh (1 hour)
 				3600       ; Retry (1 hour)
 				604800     ; Expire (1 week)
 				3600       ; Minimum (1 hour)
 )
-@		NS	dns1.esiedge.local.
-@		NS	dns2.esiedge.local.
-@		PTR	esiedge.local.
+@		NS	dns1.lab.local.
+@		NS	dns2.lab.local.
+@		PTR	lab.local.
 dns1		A	192.168.3.2
 dns2		A	192.168.3.3
-2		PTR	dns1.esiedge.local.
-3		PTR	dns2.esiedge.local.
+2		PTR	dns1.lab.local.
+3		PTR	dns2.lab.local.
 
-1		PTR	router.esiedge.local.
-2		PTR	admin1.esiedge.local.
-3		PTR	admin2.esiedge.local.
-21		PTR	syslog1.esiedge.local.
-22		PTR	syslog2.esiedge.local.
-31		PTR	ldap1.esiedge.local.
-32		PTR	ldap2.esiedge.local.
-41		PTR	mon.esiedge.local.
-51		PTR	gfs1.esiedge.local.
-52		PTR	gfs2.esiedge.local.
-53		PTR	gfs3.esiedge.local.
+1		PTR	router.lab.local.
+2		PTR	admin1.lab.local.
+3		PTR	admin2.lab.local.
+21		PTR	syslog1.lab.local.
+22		PTR	syslog2.lab.local.
+31		PTR	ldap1.lab.local.
+32		PTR	ldap2.lab.local.
+41		PTR	mon.lab.local.
+51		PTR	gfs1.lab.local.
+52		PTR	gfs2.lab.local.
+53		PTR	gfs3.lab.local.

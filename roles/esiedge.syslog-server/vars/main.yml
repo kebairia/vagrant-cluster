@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.dns-server
+# vars file for lab.dns-server
 rsyslog_packages: 
   - rsyslog
   - policycoreutils-python-utils

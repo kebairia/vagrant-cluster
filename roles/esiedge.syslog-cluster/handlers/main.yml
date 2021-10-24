@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.syslog-cluster
+# handlers file for lab.syslog-cluster
 - name: restart_dns
   service:
     name: "{{ dns_service }}"

@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.base-sys
+# handlers file for lab.base-sys
 - name: restart_net
   shell: systemctl restart NetworkManager
 - name: restart_rsyslog

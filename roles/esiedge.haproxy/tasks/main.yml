@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.haproxy
+# tasks file for lab.haproxy
 - name: install {{ haproxy_package }}
   package:
     name: "{{ haproxy_package }}"

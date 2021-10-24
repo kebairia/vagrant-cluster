@@ -1,5 +1,5 @@
 ---
-# defaults file for esiedge.ipa-server
+# defaults file for lab.ipa-server
 
 #ipaserver_base_commad: ipa-server-install -U
 #ipaserver_ip_address: "{{ ansible_default_ipv4.address }}"

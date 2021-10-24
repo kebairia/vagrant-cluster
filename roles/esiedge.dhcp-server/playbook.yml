@@ -14,7 +14,7 @@
         default_lease_time: 800
         max_lease_time: 7200 
   roles:
-     - esiedge.dhcp-server
+     - lab.dhcp-server
   # the file that contain all the variables
   vars_files:
     - ./vars/vars.yml

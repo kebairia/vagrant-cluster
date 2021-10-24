@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.glusterfs
+# tasks file for lab.glusterfs
 - name: create a partition
   parted:
     device: "{{ gfs_dev }}"

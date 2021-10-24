@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - esiedge.ipa-server
+    - lab.ipa-server

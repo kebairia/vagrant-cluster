@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.dhcp-server
+# handlers file for lab.dhcp-server
 - name: restart the dhcp service
   service:
           name: "{{dhcp_service}}"

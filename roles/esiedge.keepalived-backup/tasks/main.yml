@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.keepalived-master
+# tasks file for lab.keepalived-master
 - name: install {{ keepalived_package }}
   package:
     name: "{{ keepalived_package }}"

@@ -1,11 +1,11 @@
 ---
-# vars file for esiedge.nfs-ganesha
+# vars file for lab.nfs-ganesha
 nfs4_pseudo_path: vfs_dist
 
 # cluster setup variables
 gfs_vol: vol_dist
 gfs_bricks: /glusterfs/dist
 gfs_cluster: 
-  - gfs1.esiedge.local
-  - gfs2.esiedge.local
-  - gfs3.esiedge.local
+  - gfs1.lab.local
+  - gfs2.lab.local
+  - gfs3.lab.local

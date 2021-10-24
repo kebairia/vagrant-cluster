@@ -1,4 +1,4 @@
-# tasks file for esiedge.base-sys
+# tasks file for lab.base-sys
 ---
 # - name: update the system
 #   package:

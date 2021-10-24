@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.ipa-server
+# tasks file for lab.ipa-server
 #- name: add a hostname entry
 #  lineinfile:
 #    dest=/etc/hosts

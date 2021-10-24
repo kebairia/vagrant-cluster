@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.pacemaker
+# vars file for lab.pacemaker
 pcmk_packages:
   - pacemaker
   - pcs

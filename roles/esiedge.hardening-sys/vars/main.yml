@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.hardening-sys
+# vars file for lab.hardening-sys
 user: vagrant
 skel_dir_files:
   - skel/.bashrc

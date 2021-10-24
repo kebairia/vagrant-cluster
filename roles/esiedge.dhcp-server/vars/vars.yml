@@ -1,6 +1,6 @@
 user: vagrant
 target: all
-hostname: dhcp-dns.esiedge.local
+hostname: dhcp-dns.lab.local
 dhcp_package: dhcp-server
 dhcp_service: dhcpd
 firewalld_dhcp_service: dhcp

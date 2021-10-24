@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.dns-server
+# handlers file for lab.dns-server
 - name: restart_dns
   service:
     name: "{{ dns_service }}"

@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.nfs-ganesha
+# tasks file for lab.nfs-ganesha
 
 - name: create gluster volume
   gluster.gluster.gluster_volume:

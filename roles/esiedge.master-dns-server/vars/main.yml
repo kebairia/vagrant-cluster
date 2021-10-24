@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.dns-server
+# vars file for lab.dns-server
 dns_packages:
   - bind
   - bind-utils
@@ -7,5 +7,5 @@ dns_packages:
 dns_service: named
 firewall_dns_service: dns
 dns_db: 
-  - db.esiedge.local
+  - db.lab.local
   - db.2.168.192

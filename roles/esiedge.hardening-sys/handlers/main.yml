@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.hardening-sys
+# handlers file for lab.hardening-sys
 - name: restart_net
   shell: systemctl restart NetworkManager
 - name: restart_rsyslog

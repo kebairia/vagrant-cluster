@@ -1,4 +1,4 @@
-# tasks file for esiedge.hardening-sys
+# tasks file for lab.hardening-sys
 ---
 - name: adding multiple conf files for system hardening
   template:

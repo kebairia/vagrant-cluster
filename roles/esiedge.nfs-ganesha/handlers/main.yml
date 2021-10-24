@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.nfs-ganesha
+# handlers file for lab.nfs-ganesha
 - name: start_ganesha
   service:
     name: nfs-ganesha

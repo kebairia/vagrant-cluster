@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.master-dhcp-server
+# tasks file for lab.master-dhcp-server
 - name: install essential packages
   package:
     name: "{{ dhcp_package }}"

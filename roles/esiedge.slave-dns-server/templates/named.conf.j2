@@ -63,9 +63,9 @@ zone "." IN {
 };
 
 # Internal zone definitions
-zone "esiedge.local" IN {
+zone "lab.local" IN {
 	type slave;
-	file "data/db.esiedge.local";
+	file "data/db.lab.local";
 	masters { 192.168.3.2; };
 	allow-notify { 192.168.3.2; };
 };

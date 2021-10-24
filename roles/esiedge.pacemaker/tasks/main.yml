@@ -1,5 +1,5 @@
 ---
-# tasks file for esiedge.pacemaker
+# tasks file for lab.pacemaker
 # i used the shell module, because this is the fastest way
 # dnf and yum modules takes forever -_-
 - name: Enabling the ha repo

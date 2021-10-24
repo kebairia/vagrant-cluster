@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.base-sys
+# vars file for lab.base-sys
 user: admin
 skel_dir_files:
   - skel/.bashrc

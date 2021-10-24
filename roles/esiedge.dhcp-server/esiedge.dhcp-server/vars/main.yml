@@ -1,5 +1,5 @@
 ---
-# vars file for esiedge.dhcp-server
+# vars file for lab.dhcp-server
 
 dhcp_package: dhcp-server 
 

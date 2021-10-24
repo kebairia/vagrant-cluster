@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.ntp-server
+# handlers file for lab.ntp-server
 - name: restart_net
   service:
     name: NetworkManager

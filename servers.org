@@ -1,34 +1,11 @@
-* DEPO
-#+begin_src yaml
-- name: depo
-  box: centos/8
-  memory: 512
-  cpus: 1
-  hostname: depo.esiedge.local
-  mnm: "0E:51:ED:6E:00:04"
-  add_int: "true"
-  ints:
-    - ip: 192.168.3.4
-      method: "static"
-      type: "private_network"
-      mac: "0E:51:ED:6E:10:04" 
-    - ip: 192.168.4.4
-      method: "static"
-      type: "private_network"
-      mac: "0E:51:ED:6E:20:04" 
-  add_disks: "false"
-  disks: ["4G"]
-  pool: "esiedge"
-  prov: ansible
-  prov_file: "./configure-base-config.yml"
-#+end_src
+#+PROPERTY:  header-args :tangle ./servers.yaml
 * ADMIN1
 #+begin_src yaml
   - name: admin1
     box: centos/8
     memory: 512
     cpus: 1
-    hostname: admin1.esiedge.local
+    hostname: admin1.lab.local
     mnm: "0E:51:ED:6E:00:02"
     add_int: "true"
     ints:
@@ -38,7 +15,7 @@
         mac: "0E:51:ED:6E:10:02"
     add_disks: "false"
     disks: ["4G"]
-    pool: "esiedge"
+    pool: "lab"
     prov: ansible
     prov_file: "./configure-admin1.yml"
 #+end_src
@@ -48,7 +25,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: admin2.esiedge.local
+  hostname: admin2.lab.local
   mnm: "0E:51:ED:6E:00:03"
   add_int: "true"
   ints:
@@ -57,7 +34,7 @@
       type: "public_network"
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-admin2.yml"
 #+end_src
@@ -67,7 +44,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: syslog1.esiedge.local
+  hostname: syslog1.lab.local
   mnm: "0E:51:ED:6E:00:21"
   add_int: "true"
   ints:
@@ -76,7 +53,7 @@
       type: "public_network"
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-syslog-master.yml"
 #+end_src
@@ -86,7 +63,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: syslog2.esiedge.local
+  hostname: syslog2.lab.local
   mnm: "0E:51:ED:6E:00:22"
   add_int: "true"
   ints:
@@ -95,7 +72,7 @@
       type: "private_network"
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-syslog-slave.yml"
 #+end_src
@@ -105,7 +82,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: lb1.esiedge.local
+  hostname: lb1.lab.local
   mnm: "0E:51:ED:6E:00:11"
   add_int: "true"
   ints:
@@ -119,7 +96,7 @@
       mac: "0E:51:ED:6E:20:11" 
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-lb-master.yml"
 #+end_src
@@ -129,7 +106,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: lb2.esiedge.local
+  hostname: lb2.lab.local
   mnm: "0E:51:ED:6E:00:12"
   add_int: "true"
   ints:
@@ -143,7 +120,7 @@
       mac: "0E:51:ED:6E:20:12" 
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-lb-backup.yml"
 #+end_src
@@ -153,7 +130,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: mon1.esiedge.local
+  hostname: mon1.lab.local
   mnm: "0E:51:ED:6E:00:41"
   add_int: "true"
   ints:
@@ -162,7 +139,7 @@
       type: "private_network"
   add_disks: "false"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-monitoring.yml"
 #+end_src
@@ -172,7 +149,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: gfs1.esiedge.local
+  hostname: gfs1.lab.local
   mnm: "0E:51:ED:6E:00:51"
   add_int: "true"
   ints:
@@ -181,7 +158,7 @@
       type: "private_network"
   add_disks: "true"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-gfs-master.yml"
 #+end_src
@@ -191,7 +168,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: gfs2.esiedge.local
+  hostname: gfs2.lab.local
   mnm: "0E:51:ED:6E:00:52"
   add_int: "true"
   ints:
@@ -200,7 +177,7 @@
       type: "private_network"
   add_disks: "true"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-gfs-node.yml"
 #+end_src
@@ -210,7 +187,7 @@
   box: centos/8
   memory: 512
   cpus: 1
-  hostname: gfs3.esiedge.local
+  hostname: gfs3.lab.local
   mnm: "0E:51:ED:6E:00:53"
   add_int: "true"
   ints:
@@ -219,7 +196,7 @@
       type: "private_network"
   add_disks: "true"
   disks: ["4G"]
-  pool: "esiedge"
+  pool: "lab"
   prov: ansible
   prov_file: "./configure-gfs-node.yml"
 #+end_src

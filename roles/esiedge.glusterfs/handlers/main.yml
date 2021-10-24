@@ -1,5 +1,5 @@
 ---
-# handlers file for esiedge.glusterfs
+# handlers file for lab.glusterfs
 - name: restart_net
   service:
     name: NetworkManager
