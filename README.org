@@ -34,6 +34,35 @@ Kubernetes, High Availability using Pacemaker HAProxy, Keepalived for services a
 :PROPERTIES:
 :CUSTOM_ID: config
 :END:
+The main reason I used an extra configuration file is that using vagrantfile is somewhat frustrating;
+it requires a level of programming knowledge, and this project was aimed at a non-IT audience.
+
+As a result, I needed to use a simple configuration file for specifying and creating the virtual machines cluster;
+as you can see, the configuration file is self explanatory; however, I'll explain how to use it
+
+#+begin_src yaml
+    - name: test1
+      box: centos/8
+      memory: 512
+      cpus: 1
+      hostname: test1.esiedge.local
+      mnm: "0E:51:ED:6E:01:00"
+      add_int: "true"
+      ints:
+        - ip: 192.168.3.100
+          method: "static"
+          type: "public_network"
+          mac: "0E:51:ED:6E:11:00" 
+        - ip: 192.168.4.100
+          method: "static"
+          type: "private_network"
+          mac: "0E:51:ED:6E:21:00" 
+      add_disks: "true"
+      disks: ["4G", "200G"]
+      pool: "esiedge"
+      prov: shell
+      prov_file: "./configure-base-config.yml"
+#+end_src yaml
 * Vagrantfile
 :PROPERTIES:
 :CUSTOM_ID: vagrantfile
