@@ -17,6 +17,12 @@
 :CONTENTS:
 - 
 :END:
+
+``Serverless Edge Computing: Application for Real-Time Suspicious Behavior Detection using Deep Learning''
+This repository contains my implementation of a fully automated multi-layer infrastructure
+for Real-Time Suspicious Behavior Detection Using Deep Learning Techniques, on an Edge Computing
+Architecture with DevOps and Performance testing activities, developing automation frameworks, scalability Using Vagrant, Ansible and Packer, Docker,
+Kubernetes, High Availability using Pacemaker HAProxy, Keepalived for services and GlusterFS, NFS-Ganesha for filesystem server ...
 * Configuration file
 * Vagrantfile
 * Network
