@@ -10,7 +10,7 @@
 #+html: </p>
 #+html: <hr>
 
-** Contents
+* Contents
 :PROPERTIES:
 :TOC:      :include all :ignore this
 :END:
@@ -18,6 +18,14 @@
 - [[#intro][Introduction]]
 - [[#config][Configuration file]]
 - [[#vagrantfile][Vagrantfile]]
+- [[#arch][Architecture]]
+  - [[#global_config][Global Configuration]]
+    - [[#net][Network]]
+  - [[#srv][SRV (Services Server)]]
+  - [[#edge][Edge]]
+  - [[#fog][Fog]]
+    - [[#file_sys][File system]]
+    - [[#kubernetes][Kubernetes]]
 - [[network][Network]]
 - [[#usage][Usage]]
 :END:
@@ -83,9 +91,37 @@ of the information about the virtual machine's fleet, and then provision them as
 #+begin_src sh :exports both
   vagrant up vm1 vm2
 #+end_src
-* Network
+* Architecture
+:PROPERTIES:
+:CUSTOM_ID: arch
+:END:
+** Global configuration
+:PROPERTIES:
+:CUSTOM_ID: global_config
+:END:
+*** Network
 :PROPERTIES:
 :CUSTOM_ID: network
+:END:
+** SRV (Services)
+:PROPERTIES:
+:CUSTOM_ID: srv
+:END:
+** Edge
+:PROPERTIES:
+:CUSTOM_ID: edge
+:END:
+** Fog
+:PROPERTIES:
+:CUSTOM_ID: fog
+:END:
+*** File system
+:PROPERTIES:
+:CUSTOM_ID: file_sys
+:END:
+*** Kubernetes
+:PROPERTIES:
+:CUSTOM_ID: kubernetes
 :END:
 
 * Usage
