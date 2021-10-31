@@ -1,0 +1,11 @@
+---
+- name: Install and Configure Backup Load Balancer
+  hosts: all
+  user: vagrant
+  become: true
+  gather_facts: yes
+  roles:
+    - esiedge.base-sys
+    - esiedge.keepalived-backup
+    - esiedge.haproxy
+...

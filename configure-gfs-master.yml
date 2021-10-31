@@ -1,0 +1,12 @@
+---
+- name: Install and Configure GlusterFS master node
+  hosts: fog
+  user: vagrant
+  become: true
+  gather_facts: yes
+  roles:
+    - esiedge.base-sys
+    - esiedge.pacemaker
+    - esiedge.glusterfs
+    - esiedge.nfs-ganesha
+...
