@@ -25,6 +25,18 @@ Architecture with DevOps and Performance testing activities, developing automati
 Kubernetes, High Availability using Pacemaker HAProxy, Keepalived for services and GlusterFS, NFS-Ganesha for filesystem server ...
 * Configuration file
 * Vagrantfile
+The vagrantfile's purpose here is to read the configuration file 'in my case [[file:servers.yaml][servers.yaml]] ' and obtain all
+of the information about the virtual machine's fleet, and then provision them as requested by the command line.
+
+- provisioning all virtual machines specified in the configuration file
+#+begin_src sh :exports both
+  vagrant up
+#+end_src
+
+- You can also specify a subset of the virtual machines.
+#+begin_src sh :exports both
+  vagrant up vm1 vm2
+#+end_src
 * Network
 * Usage
 setup you server's information on [[file:servers.yml]] file
