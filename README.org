@@ -1,8 +1,6 @@
 # ---------------------------------------------------------------------
 #+STARTUP:          content showstars indent
 #+EXCLUDE_TAGS:     journal noexport
-#+EXPORT_FILE_NAME: org_master.pdf
-#+ARCHIVE:          ~/dox/wrk/pfe/docs/thesis_infra/thesis.archive.org
 # ---------------------------------------------------------------------
 #+html: <p align="center"><b> This repo still under construction ❗ </b></p>
 #+html: <p align="center">
