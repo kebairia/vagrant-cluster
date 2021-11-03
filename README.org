@@ -18,7 +18,7 @@
 - [[#vagrantfile][Vagrantfile]]
 - [[#arch][Architecture]]
   - [[#global_config][Global Configuration]]
-    - [[#net][Network]]
+    - [[#network][Network]]
   - [[#srv][SRV (Services Server)]]
   - [[#edge][Edge]]
   - [[#fog][Fog]]
