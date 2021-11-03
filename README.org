@@ -107,10 +107,18 @@ of the information about the virtual machine's fleet, and then provision them as
 :PROPERTIES:
 :CUSTOM_ID: srv
 :END:
+The main reason we used *srv cluster server* is to provides all the necessary services for the Edge and Fog servers
+
+It provide services like *DNS*, *DHCP*, *NTP* ...etc
+
+The common thing between these services is that it serve the whole infrastructure
+
+that all of these services are highly available, considering that the majority of them has a build-in failover mechanism
 ** Edge
 :PROPERTIES:
 :CUSTOM_ID: edge
 :END:
+The Edge on the other hand is made of multiple Raspberry PI that has direct connection to the camera's
 ** Fog
 :PROPERTIES:
 :CUSTOM_ID: fog
