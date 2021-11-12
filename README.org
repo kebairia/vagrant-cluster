@@ -1,7 +1,11 @@
+#+title: Vagrant cluster
+#+author: Zakaria.K 
 # ---------------------------------------------------------------------
 #+STARTUP:          content showstars indent
 #+EXCLUDE_TAGS:     journal noexport
 # ---------------------------------------------------------------------
+#+html: <img src="https://img.shields.io/badge/stage-%CE%B1,%20experimental-red?style=flat-square"></p>
+
 #+html: <p align="center"><b> This repo still under construction ❗ </b></p>
 #+html: <p align="center">
 #+html: <img src="./img/const.png" alt="contruction image" width="80" align="center">
