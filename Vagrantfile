@@ -1,5 +1,5 @@
 require "yaml"
-servers = YAML.load_file('servers.yml')
+servers = YAML.load_file('servers.yaml')
 #
 # VARIABLES
 #
@@ -54,7 +54,7 @@ Vagrant.configure("2") do |config|
         libvirt.memory = servers["memory"]
         libvirt.management_network_mac = servers["mnm"]
         libvirt.management_network_address = MGN
-        libvirt.management_network_name = "esinet"
+        libvirt.management_network_name = "labnet"
         #----------
         # STORAGE
         #----------
