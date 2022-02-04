@@ -1,5 +1,43 @@
 #+PROPERTY:  header-args :tangle ./servers.yaml
-* ADMIN1
+* NODE1
+#+begin_src yaml
+- name: node1
+  desc: "A node for RedHat Engineer preparation"
+  box: centos/8
+  memory: 512
+  cpus: 1
+  mnm: "0E:51:ED:6E:00:04"
+  add_int: "false"
+  ints:
+    - ip: 192.168.3.3
+      method: "static"
+      type: "public_network"
+  add_disks: "true"
+  disks: ["4G"]
+  pool: "lab"
+  prov: ansible
+  prov_file: "./configure-base-config.yml"
+#+end_src
+* NODE2
+#+begin_src yaml
+- name: node2
+  desc: "A node for RedHat Engineer preparation"
+  box: centos/8
+  memory: 512
+  cpus: 1
+  mnm: "0E:51:ED:6E:00:05"
+  add_int: "false"
+  ints:
+    - ip: 192.168.3.3
+      method: "static"
+      type: "public_network"
+  add_disks: "true"
+  disks: ["4G"]
+  pool: "lab"
+  prov: ansible
+  prov_file: "./configure-base-config.yml"
+#+end_src
+* ADMIN1                                                            :ARCHIVE:
 #+begin_src yaml
   - name: admin1
     box: centos/8
@@ -19,7 +57,7 @@
     prov: ansible
     prov_file: "./configure-admin1.yml"
 #+end_src
-* ADMIN2
+* ADMIN2                                                            :ARCHIVE:
 #+begin_src yaml
 - name: admin2
   box: centos/8
@@ -38,7 +76,7 @@
   prov: ansible
   prov_file: "./configure-admin2.yml"
 #+end_src
-* SYSLOG1
+* SYSLOG1                                                           :ARCHIVE:
 #+begin_src yaml
 - name: syslog1
   box: centos/8
@@ -57,7 +95,7 @@
   prov: ansible
   prov_file: "./configure-syslog-master.yml"
 #+end_src
-* SYSLOG2
+* SYSLOG2                                                           :ARCHIVE:
 #+begin_src yaml
 - name: syslog2
   box: centos/8
@@ -76,7 +114,7 @@
   prov: ansible
   prov_file: "./configure-syslog-slave.yml"
 #+end_src
-* LB1
+* LB1                                                               :ARCHIVE:
 #+begin_src yaml
 - name: lb1
   box: centos/8
@@ -100,7 +138,7 @@
   prov: ansible
   prov_file: "./configure-lb-master.yml"
 #+end_src
-* LB2
+* LB2                                                               :ARCHIVE:
 #+begin_src yaml
 - name: lb2
   box: centos/8
@@ -124,7 +162,7 @@
   prov: ansible
   prov_file: "./configure-lb-backup.yml"
 #+end_src
-* monitoring
+* monitoring                                                        :ARCHIVE:
 #+begin_src yaml
 - name: mon
   box: centos/8
@@ -143,7 +181,7 @@
   prov: ansible
   prov_file: "./configure-monitoring.yml"
 #+end_src
-* GFS1
+* GFS1                                                              :ARCHIVE:
 #+begin_src yaml
 - name: gfs1
   box: centos/8
@@ -162,7 +200,7 @@
   prov: ansible
   prov_file: "./configure-gfs-master.yml"
 #+end_src
-* GFS2
+* GFS2                                                              :ARCHIVE:
 #+begin_src yaml
 - name: gfs2
   box: centos/8
@@ -181,7 +219,7 @@
   prov: ansible
   prov_file: "./configure-gfs-node.yml"
 #+end_src
-* GFS3
+* GFS3                                                              :ARCHIVE:
 #+begin_src yaml
 - name: gfs3
   box: centos/8
