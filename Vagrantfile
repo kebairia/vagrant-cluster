@@ -6,6 +6,7 @@ servers = YAML.load_file('servers.yaml')
 CDROM = "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
 MGN = "192.168.2.0/24"
 BR_NET = "br0"
+FQN = ".lab.local"
 #
 # CONFIGURATION
 #
@@ -46,7 +47,7 @@ Vagrant.configure("2") do |config|
       # SSH CONFIG
       #server.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
       # HOSTNAME
-      server.vm.hostname = servers["hostname"]
+      server.vm.hostname = servers["name"]+FQN
       server.vm.provider :libvirt do |libvirt|
         # libvirt.storage_pool_path = servers["pool"]
         libvirt.storage_pool_name = servers["pool"]
