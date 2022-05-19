@@ -7,5 +7,5 @@
   vars_files:
     - ./vars/vars.yml
   roles:
-    - esiedge.base-sys
+    - base-sys
 ...
