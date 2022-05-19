@@ -3,7 +3,8 @@ servers = YAML.load_file('servers.yaml')
 #
 # VARIABLES
 #
-CDROM = "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+#CDROM = "/home/zakaria/dox/zkext/isos/CentOS-8.3.2011-x86_64-dvd1.iso"
+CDROM = "/home/zakaria/dox/zkext/isos/Rocky-8.5-x86_64-dvd1.iso"
 MGN = "192.168.2.0/24"
 BR_NET = "br0"
 FQN = ".lab.local"
