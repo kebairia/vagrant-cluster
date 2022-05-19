@@ -1,32 +1,84 @@
-- name: node1
-  desc: "A node for RedHat Engineer preparation"
-  box: centos/8
+- name: ssh-server
+  desc: "An ssh server"
+  box: rockylinux/8
   memory: 512
   cpus: 1
-  hostname: node1.lab.local
-  mnm: "0E:51:ED:6E:00:04"
+  mnm: "0E:51:ED:6E:00:02"
+  add_int: "false"
+  ints:
+    - ip: 192.168.3.2
+      method: "static"
+      type: "private_network"
+  add_disks: "true"
+  disks: ["4G"]
+  pool: "lab"
+  prov: shell
+  prov_file: "./test.sh"
+
+- name: private-host
+  desc: "private host"
+  box: rockylinux/8
+  memory: 512
+  cpus: 1
+  mnm: "0E:51:ED:6E:00:03"
   add_int: "false"
   ints:
     - ip: 192.168.3.3
       method: "static"
-      type: "public_network"
+      type: "private_network"
+  add_disks: "true"
+  disks: ["4G"]
+  pool: "lab"
+  prov: shell
+  prov_file: "./test.sh"
+############
+#  ANSIBLE
+############
+- name: node1
+  desc: "Node 1 for Ansible"
+  box: rockylinux/8
+  memory: 512
+  cpus: 1
+  mnm: "0E:51:ED:6E:00:04"
+  add_int: "false"
+  ints:
+    - ip: 192.168.3.4
+      method: "static"
+      type: "private_network"
+  add_disks: "true"
+  disks: ["4G"]
+  pool: "lab"
+  prov: ansible
+  prov_file: "./configure-base-config.yml"
+- name: node2
+  desc: "Node 2 for Ansible"
+  box: rockylinux/8
+  memory: 512
+  cpus: 1
+  mnm: "0E:51:ED:6E:00:05"
+  add_int: "true"
+  ints:
+    - ip: 192.168.3.5
+      method: "static"
+      type: "private_network"
   add_disks: "true"
   disks: ["4G"]
   pool: "lab"
   prov: ansible
   prov_file: "./configure-base-config.yml"
 
-- name: node2
-  desc: "A node for RedHat Engineer preparation"
-  box: centos/8
+
+- name: node3
+  desc: "Node 3 for Ansible"
+  box: rockylinux/8
   memory: 512
   cpus: 1
-  mnm: "0E:51:ED:6E:00:05"
-  add_int: "false"
+  mnm: "0E:51:ED:6E:00:06"
+  add_int: "true"
   ints:
-    - ip: 192.168.3.3
+    - ip: 192.168.3.6
       method: "static"
-      type: "public_network"
+      type: "private_network"
   add_disks: "true"
   disks: ["4G"]
   pool: "lab"
