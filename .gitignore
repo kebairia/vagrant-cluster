@@ -1,3 +1,5 @@
 /.vagrant/
 /dsg/
 *.log
+test.sh
+.old
