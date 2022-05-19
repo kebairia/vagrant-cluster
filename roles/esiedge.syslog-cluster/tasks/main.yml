@@ -1,4 +1,0 @@
----
-- name: setting up the syslog cluster
-  script:
-    cmd: ../files/setup_syslog_cluster.sh

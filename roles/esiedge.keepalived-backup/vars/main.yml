@@ -1,5 +1,0 @@
----
-# vars file for lab.keepalived-master
-keepalived_package: keepalived
-keepalived_service: keepalived
-VIP: 192.168.4.10

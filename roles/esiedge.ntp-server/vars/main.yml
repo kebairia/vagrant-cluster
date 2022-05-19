@@ -1,4 +1,0 @@
----
-# vars file for lab.ntp-server
-ntp_packages: chrony
-ntp_service: chronyd

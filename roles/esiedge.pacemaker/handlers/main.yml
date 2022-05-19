@@ -1,8 +1,0 @@
----
-# handlers file for lab.pacemaker
-- name: restart_net
-  service:
-    name: NetworkManager
-    state: restarted
-- name: reload_firewalld
-  shell: firewall-cmd --reload

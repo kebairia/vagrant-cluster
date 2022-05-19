@@ -1,9 +1,0 @@
----
-# vars file for lab.dhcp-server
-
-dhcp_package: dhcp-server 
-
-dhcp_service: dhcpd
-
-dhcp_firwall_service: dhcp
-

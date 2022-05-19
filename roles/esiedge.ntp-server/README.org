@@ -1,9 +1,0 @@
-- Testing environment specifications:
-
-|            | HA-Cluster-Node1  | HA Cluster-Node2  | HA Cluster-Node2  | iSCSI Storage Server |
-|------------+-------------------+-------------------+-------------------+----------------------|
-| Hostname   | pcmk1             | pcmk2             | pcmk3             | test1                |
-| FQDN       | pcmk1.example.com | pcmk2.example.com | pcmk3.example.com | test1.example.com    |
-| IP Address | 192.168.2.41    | 192.168.2.42    | 192.168.2.43    | 192.168.2.100      |
-| OS         | Centos 8.1        | Centos 8.1        | Centos 8.1        | RHEL 7               |
-|------------+-------------------+-------------------+-------------------+----------------------|
