@@ -1,0 +1,44 @@
+- block:
+    - name: Compress old repos
+      archive:
+        path: /etc/yum.repos.d/*
+        dest: /root/old_repos.xz
+        format: xz
+    - name: Disable all repos
+      shell: >-
+       sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/*.repo
+  # Mounting DVD on /media
+    - name: Mounting DVD on /media
+      mount:
+        path: /media
+        src: /dev/sr0
+        fstype: iso9660
+        opts: ro
+        state: mounted
+        boot: True
+      register: mount_status
+      failed_when: False
+    # Check if local repo are already created
+    - name: check if local repos exist
+      stat:
+        path: "{{ item }}"
+      loop:
+        - /etc/yum.repos.d/local-baseos.repo
+        - /etc/yum.repos.d/local-appstream.repo
+      register: repos_stat_result
+    - name: Creating local repos
+      yum_repository:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        baseurl: "{{ item.baseurl }}"
+        enabled: True
+        gpgcheck: No
+      loop:
+        - { name: "local-baseos", desc: "Local dnf repo (baseos)", baseurl: "file:///media/BaseOS" }
+        - { name: "local-appstream", desc: "Local dnf repo (appstream)", baseurl: "file:///media/AppStream" }
+      when: repos_stat_result.stat.exists is defined and not repos_stat_result.stat.exists
+    - name: Clean dnf cache
+      command: dnf clean all
+      changed_when: False
+  when: ansible_facts['os_family'] == "RedHat"
+  tags: repos

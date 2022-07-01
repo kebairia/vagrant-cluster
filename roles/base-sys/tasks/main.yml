@@ -1,0 +1,90 @@
+# tasks file for lab.base-sys
+---
+- name: 1- Repos configuration
+  import_tasks: configure_repos.yml
+- name: 2- Environment configuration
+  import_tasks: configure_env.yml
+- name: 3- Packages installation
+  import_tasks: install_packages.yml
+# - name: 4- Network configuration
+#   import_tasks: configure_env.yml
+
+  ## NETWORK Configuration
+  ## dns dhcp ..etc
+## - name: extract wrong dns entries
+##   script: ../files/delete_dns.sh
+##   failed_when: false
+#- name: configure network
+  #community.general.nmcli:
+    #conn_name: "{{ item.con }}"
+    #ifname: "{{ item.ifname }}"
+    #type: ethernet
+    #autoconnect: true
+    #state: present
+    #dns4:
+    #- "{{ dns_master_ip }}"
+    #- "{{ dns_slave_ip }}"
+    #dns4_ignore_auto: yes
+  #loop:
+    #- { con: "System eth0", ifname: "eth0" }
+    #- { con: "System eth1", ifname: "eth1" }
+    #- { con: "System eth2", ifname: "eth2" }
+    #- { con: "System eth3", ifname: "eth3" }
+  #failed_when: false
+  #notify: restart_net
+
+## ssh config, enable password
+#- name: enable password authentication for ssh
+  #shell: |
+    #sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+  #notify: restart_sshd
+##
+## package [client side]
+##
+##---------------------
+## INSTALLING PACKAGES
+##---------------------
+#- name: install some packages
+  #package:
+    #name: "{{ item }}"
+    #state: present
+  #loop: "{{ packages }}"
+
+## i need a client role
+## - name: disabling a repo [testing]
+##   shell: |
+##     sed -i -e "s/enabled=1/enabled=0/g" /etc/yum.repos.d/CentOS-Gluster-7.repo
+## - name: enable centos-gluster7 repo
+##   dnf:
+##     enablerepo: centos-gluster7
+##     name: "{{ item }}" 
+##   loop: 
+##     - glusterfs
+##     - glusterfs-fuse
+
+## starting the firewalld
+#- name: start/enable firewalld
+  #service: name=firewalld state=started enabled=yes
+
+##------------------
+## ENABLING SERVICES
+##------------------
+## Service config
+#- name: enable rsyslog service
+  #service:
+    #name: rsyslog 
+    #state: started 
+    #enabled: yes
+## configuration file
+#- name: setting the rsyslog configuration file [client]
+  #template:
+    #src: rsyslog-client.conf.j2
+    #dest: /etc/rsyslog.conf
+    #owner: root
+    #group: root
+  #notify: restart_rsyslog
+
+  ##
+  ## LDAP configuration [client]
+  ##
+

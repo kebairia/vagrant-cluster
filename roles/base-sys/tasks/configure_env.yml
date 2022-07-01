@@ -1,0 +1,28 @@
+- name: Adding .bashrc templates
+  template:
+    src: "{{ item.user }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop:
+    - { user: user_bashrc, dest: /home/vagrant/.bashrc, owner: vagrant, group: vagrant}
+    - { user: user_bashrc, dest: /etc/skel/.bashrc, owner: root, group: root}
+    - { user: root_bashrc, dest: /root/.bashrc, owner: root, group: root}
+  tags: env
+
+- name: Adding other files to skel directory
+  lineinfile:
+    path: "{{ item }}"
+    line: ""
+    create: True
+  loop:
+    - /etc/skel/.bash_profile
+    - /etc/skel/.bash_logout
+  tags: env
+
+- name: Enable SELinux (enforcing mode, targeted policy)
+  selinux:
+    policy: targeted
+    state: enforcing
+  tags: env
+

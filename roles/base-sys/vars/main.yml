@@ -1,0 +1,19 @@
+---
+# vars file for lab.base-sys
+user: vagrant
+skel_dir_files:
+  - skel/.bashrc
+  - skel/.bash_profile
+  - skel/.bash_logout
+packages:
+  - vim
+  - bash-completion
+  - bind-utils
+  - net-tools
+  - rsyslog
+update: true
+dns_master_ip: 192.168.3.2
+dns_slave_ip: 192.168.3.3
+
+old_repos_archive: "/root/old_repos.tar"
+old_repos_archive_format: xz

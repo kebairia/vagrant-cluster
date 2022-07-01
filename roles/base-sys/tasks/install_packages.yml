@@ -1,0 +1,5 @@
+- name: install essential packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
