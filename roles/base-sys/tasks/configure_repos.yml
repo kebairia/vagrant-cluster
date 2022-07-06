@@ -1,12 +1,13 @@
 - block:
     - name: Compress old repos
       archive:
-        path: /etc/yum.repos.d/*
-        dest: /root/old_repos.xz
+        path: /etc/yum.repos.d/*.repo
+        dest: /root/old_repos.tar.xz
         format: xz
-    - name: Disable all repos
-      shell: >-
-       sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/*.repo
+        remove: YES
+    # - name: Disable all repos
+    #   shell: >-
+    #    sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/*.repo
   # Mounting DVD on /media
     - name: Mounting DVD on /media
       mount:
@@ -21,10 +22,10 @@
     # Check if local repo are already created
     - name: check if local repos exist
       stat:
-        path: "{{ item }}"
-      loop:
-        - /etc/yum.repos.d/local-baseos.repo
-        - /etc/yum.repos.d/local-appstream.repo
+        path: /etc/yum.repos.d/local/baseos.repo
+      # loop:
+      #   - /etc/yum.repos.d/local-baseos.repo
+      #   - /etc/yum.repos.d/local-appstream.repo
       register: repos_stat_result
     - name: Creating local repos
       yum_repository:
