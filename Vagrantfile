@@ -51,6 +51,7 @@ Vagrant.configure("2") do |config|
       server.vm.hostname = servers["name"]+FQN
       server.vm.provider :libvirt do |libvirt|
         # libvirt.storage_pool_path = servers["pool"]
+
         libvirt.storage_pool_name = servers["pool"]
         libvirt.cpus = servers["cpus"]
         libvirt.memory = servers["memory"]
@@ -60,13 +61,30 @@ Vagrant.configure("2") do |config|
         #----------
         # STORAGE
         #----------
+        # the main disk for the vm
+        if servers["disk_bus"] == ""
+          libvirt.disk_bus = "virtio"
+        else
+          libvirt.disk_bus = servers["disk_bus"]
+        end
         libvirt.storage :file, :device => :cdrom, :path => CDROM
         # adding extra disks
         if servers["add_disks"] == "true"
           drives = servers["disks"]
           drives.each do |disk|
             libvirt.storage :file, :size => disk
-          end
+        end
+
+        if servers["type_bus"] == ''
+          libvirt.storage :bus => "sata"
+        else
+          libvirt.storage :bus => "virtio"
+        end
+          #buses = servers["type_bus"]
+          #buses.each do |bus|
+            #libvirt.storage :bus => bus
+          #end
+        #end
 
         end # end storage
       end # end libvirt

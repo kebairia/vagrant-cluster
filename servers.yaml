@@ -1,86 +1,54 @@
-- name: ssh-server
-  desc: "An ssh server"
+- name: net
+  desc: "net vm (RHCSA) for networking"
   box: rockylinux/8
   memory: 512
   cpus: 1
   mnm: "0E:51:ED:6E:00:02"
-  add_int: "false"
+  add_int: "true"
   ints:
     - ip: 192.168.3.2
       method: "static"
       type: "private_network"
-  add_disks: "true"
-  disks: ["4G"]
+    #- ip: 192.168.4.2
+      #method: "static"
+      #type: "public_network"
+  add_disks: "false"
   pool: "lab"
-  prov: shell
-  prov_file: "./test.sh"
+  prov: ansible
+  prov_file: "./configure-base-config.yml"
 
-- name: private-host
-  desc: "private host"
+- name: storage
+  desc: "storage vm (RHCSA) for storage"
   box: rockylinux/8
-  memory: 512
+  memory: 2048
   cpus: 1
+  disk_bus: "sata"
   mnm: "0E:51:ED:6E:00:03"
-  add_int: "false"
+  add_int: "true"
   ints:
     - ip: 192.168.3.3
       method: "static"
       type: "private_network"
   add_disks: "true"
-  disks: ["4G"]
+  disks: ["6G", "6G"]
   pool: "lab"
-  prov: shell
-  prov_file: "./test.sh"
-############
-#  ANSIBLE
-############
-- name: node1
-  desc: "Node 1 for Ansible"
+  prov: ansible
+  prov_file: "./configure-base-config.yml"
+
+- name: other
+  desc: "other vm (RHCSA) for anything else"
   box: rockylinux/8
   memory: 512
   cpus: 1
+  disk_bus: "sata"
   mnm: "0E:51:ED:6E:00:04"
-  add_int: "false"
+  add_int: "true"
   ints:
     - ip: 192.168.3.4
       method: "static"
       type: "private_network"
   add_disks: "true"
-  disks: ["4G"]
-  pool: "lab"
-  prov: ansible
-  prov_file: "./configure-base-config.yml"
-- name: node2
-  desc: "Node 2 for Ansible"
-  box: rockylinux/8
-  memory: 512
-  cpus: 1
-  mnm: "0E:51:ED:6E:00:05"
-  add_int: "true"
-  ints:
-    - ip: 192.168.3.5
-      method: "static"
-      type: "private_network"
-  add_disks: "true"
-  disks: ["4G"]
-  pool: "lab"
-  prov: ansible
-  prov_file: "./configure-base-config.yml"
-
-
-- name: node3
-  desc: "Node 3 for Ansible"
-  box: rockylinux/8
-  memory: 512
-  cpus: 1
-  mnm: "0E:51:ED:6E:00:06"
-  add_int: "true"
-  ints:
-    - ip: 192.168.3.6
-      method: "static"
-      type: "private_network"
-  add_disks: "true"
-  disks: ["4G"]
+  disks: ["2G"]
   pool: "lab"
   prov: ansible
   prov_file: "./configure-base-config.yml"
