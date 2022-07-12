@@ -2,4 +2,5 @@
 /dsg/
 *.log
 test.sh
+*.xml
 .old
